@@ -6,7 +6,7 @@ const router = express.Router();
 app.use(cors());
 
 router.get("/", cors(), (req, res) => {
-  res.json({ hello: "yumyum" });
+  res.json({ hello: "yumyumclub" });
 });
 
 app.use("/", router);
