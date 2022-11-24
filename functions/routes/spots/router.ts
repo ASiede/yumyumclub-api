@@ -1,10 +1,10 @@
 import express from "express";
 import bodyParser from "body-parser";
-import { SpotController } from "../../controllers/Spot.controller";
+import { SpotsController } from "../../controllers/Spots.controller";
 
 const router = express.Router();
 const jsonParser = bodyParser.json();
 
-router.get("/", jsonParser, SpotController.getSpot);
+router.get("/", jsonParser, SpotsController.getSpot);
 
 export { router };
