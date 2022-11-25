@@ -3,22 +3,17 @@ import { Spot } from "../models/model";
 
 class Controller {
   async getSpotsToVisit(req: Request, res: Response) {
+    const { visited } = req.query;
     try {
-      const spotsToVisit = await Spot.find({
-        dateVisited: null,
-      });
-      res.json(spotsToVisit);
-    } catch (err) {
-      res.status(500).send({ message: err });
-    }
-  }
-
-  async getVisitedSpots(req: any, res: any) {
-    try {
-      // const spotsToVisit = await Spot.find({ dateVisited: { $ne: null } });
-      // const spotsToVisit = await Spot.find().exists("dateVisited", true);
-      const spotsToVisit = await Spot.find({ dateVisited: { $gt: "0" } });
-      res.status(200).json(spotsToVisit);
+      if (visited) {
+        const spotsVisited = await Spot.find({ dateVisited: { $ne: null } });
+        res.status(200).json(spotsVisited);
+      } else {
+        const spotsToVisit = await Spot.find({
+          dateVisited: null,
+        });
+        res.status(200).json(spotsToVisit);
+      }
     } catch (err) {
       res.status(500).send({ message: err });
     }
