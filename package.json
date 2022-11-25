@@ -1,7 +1,8 @@
 {
   "name": "yumyumclub-api",
   "scripts": {
-    "start": "nodemon functions/api.ts"
+    "start": "nodemon functions/api.ts",
+    "startLocal": "NODE_ENV=local npm start"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
