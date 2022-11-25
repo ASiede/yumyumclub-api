@@ -19,29 +19,26 @@ class Controller {
     }
   }
 
-  async postSpot(req: any, res: any) {
-    // TODO: error handling for duplicate name
-    //   res.status(400).send({
-    //     message: 'This is an error!'
-    //  });
-    // TODO: simplify required fields
+  async postSpot(req: Request, res: Response) {
     try {
-      const requiredFields = ["name"];
-      for (let i = 0; i < requiredFields.length; i += 1) {
-        const field = requiredFields[i];
-        if (!(field in req.body)) {
-          const message = `Missing \`${field}\` in request body`;
-          return res.status(400).send(message);
-        }
+      if (!req.body.name) {
+        return res
+          .status(400)
+          .send({ message: "Missing name in request body" });
       }
-      const data = await Spot.create({
+      const spot = await Spot.create({
         name: req.body.name,
         dateVisited: null,
       });
-      res.status(201).json(data);
-    } catch (err) {
+      res.status(201).json(spot);
+    } catch (err: any) {
       console.log(err);
-      res.status(500).json({ message: err });
+      if (err.code === 11000) {
+        res.status(400).send({
+          message: `${err.keyValue?.name} already exists. Name must be unique`,
+        });
+      }
+      res.status(500).send({ message: err });
     }
   }
 }
