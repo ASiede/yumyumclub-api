@@ -9,7 +9,7 @@ dotenv.config();
 const isLocal = (process.env.NODE_ENV = "local");
 
 // Connect to the Database
-const mongoString = process.env.DATABASE_URL;
+const mongoString = process.env.DATABASE_URL || "";
 mongoose.connect(mongoString);
 const database = mongoose.connection;
 database.on("error", (error) => {

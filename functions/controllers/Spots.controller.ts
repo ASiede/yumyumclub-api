@@ -1,9 +1,12 @@
+import { Request, Response } from "express";
 import { Spot } from "../models/model";
 
 class Controller {
-  async getSpotsToVisit(req: any, res: any) {
+  async getSpotsToVisit(req: Request, res: Response) {
     try {
-      const spotsToVisit = await Spot.find({ dateVisited: null });
+      const spotsToVisit = await Spot.find({
+        dateVisited: null,
+      });
       res.json(spotsToVisit);
     } catch (err) {
       res.status(500).send({ message: err });
