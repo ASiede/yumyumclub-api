@@ -1,18 +1,31 @@
 import { Spot } from "../models/model";
 
 class Controller {
-  async getSpot(req: any, res: any) {
+  async getSpotsToVisit(req: any, res: any) {
     try {
-      const data = await Spot.find();
-      res.json(data);
+      const spotsToVisit = await Spot.find({ dateVisited: null });
+      res.json(spotsToVisit);
     } catch (err) {
-      console.log("err", err);
-      res.status(500).message(err);
+      res.status(500).send({ message: err });
+    }
+  }
+
+  async getVisitedSpots(req: any, res: any) {
+    try {
+      // const spotsToVisit = await Spot.find({ dateVisited: { $ne: null } });
+      // const spotsToVisit = await Spot.find().exists("dateVisited", true);
+      const spotsToVisit = await Spot.find({ dateVisited: { $gt: "0" } });
+      res.status(200).json(spotsToVisit);
+    } catch (err) {
+      res.status(500).send({ message: err });
     }
   }
 
   async postSpot(req: any, res: any) {
     // TODO: error handling for duplicate name
+    //   res.status(400).send({
+    //     message: 'This is an error!'
+    //  });
     // TODO: simplify required fields
     try {
       const requiredFields = ["name"];
@@ -25,6 +38,7 @@ class Controller {
       }
       const data = await Spot.create({
         name: req.body.name,
+        dateVisited: null,
       });
       res.status(201).json(data);
     } catch (err) {
