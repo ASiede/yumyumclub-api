@@ -6,5 +6,6 @@ const router = express.Router();
 const jsonParser = bodyParser.json();
 
 router.get("/", jsonParser, SpotsController.getSpot);
+router.post("/", jsonParser, SpotsController.postSpot);
 
 export { router };
