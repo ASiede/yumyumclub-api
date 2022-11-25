@@ -3,7 +3,7 @@ import { Spot } from "../models/model";
 
 class Controller {
   async getSpotsToVisit(req: Request, res: Response) {
-    const { visited } = req.query;
+    const visited = req.query.visited === "true";
     try {
       if (visited) {
         const spotsVisited = await Spot.find({ dateVisited: { $ne: null } });
