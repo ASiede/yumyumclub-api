@@ -19,6 +19,16 @@ class Controller {
     }
   }
 
+  async getSpot(req: Request, res: Response) {
+    const { id } = req.query;
+    try {
+      const spot = await Spot.findById(id);
+      res.status(200).json(spot);
+    } catch (err) {
+      res.status(500).send({ message: err });
+    }
+  }
+
   async postSpot(req: Request, res: Response) {
     try {
       if (!req.body.name) {
@@ -43,6 +53,7 @@ class Controller {
 
   async putSpot(req: Request, res: Response) {
     try {
+      const { id } = req.query;
       const updateableFields = ["name", "dateVisited"];
       const toUpdate = updateableFields.reduce((acc: any, field) => {
         if (field in req.body) {
@@ -50,13 +61,9 @@ class Controller {
         }
         return acc;
       }, {});
-      const updatedSpot = await Spot.findOneAndUpdate(
-        { _id: req.params.id },
-        toUpdate,
-        {
-          new: true,
-        }
-      );
+      const updatedSpot = await Spot.findOneAndUpdate({ _id: id }, toUpdate, {
+        new: true,
+      });
       res.status(204).json(updatedSpot);
     } catch (err: any) {
       res.status(500).send({ message: err });
@@ -65,7 +72,8 @@ class Controller {
 
   async deleteSpot(req: Request, res: Response) {
     try {
-      const updatedSpot = await Spot.findByIdAndRemove(req.params.id);
+      const { id } = req.query;
+      const updatedSpot = await Spot.findByIdAndRemove(id);
       res.status(202).json(updatedSpot);
     } catch (err: any) {
       res.status(500).send({ message: err });
