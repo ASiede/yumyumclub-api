@@ -32,12 +32,33 @@ class Controller {
       });
       res.status(201).json(spot);
     } catch (err: any) {
-      console.log(err);
       if (err.code === 11000) {
         res.status(400).send({
           message: `${err.keyValue?.name} already exists. Name must be unique`,
         });
       }
+      res.status(500).send({ message: err });
+    }
+  }
+
+  async putSpot(req: Request, res: Response) {
+    try {
+      const updateableFields = ["name", "dateVisited"];
+      const toUpdate = updateableFields.reduce((acc: any, field) => {
+        if (field in req.body) {
+          acc[field] = req.body[field];
+        }
+        return acc;
+      }, {});
+      const updatedSpot = await Spot.findOneAndUpdate(
+        { _id: req.params.id },
+        toUpdate,
+        {
+          new: true,
+        }
+      );
+      res.status(200).json(updatedSpot);
+    } catch (err: any) {
       res.status(500).send({ message: err });
     }
   }

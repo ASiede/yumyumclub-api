@@ -7,5 +7,6 @@ const jsonParser = bodyParser.json();
 
 router.get("/", jsonParser, SpotsController.getSpotsToVisit);
 router.post("/", jsonParser, SpotsController.postSpot);
+router.put("/:id", jsonParser, SpotsController.putSpot);
 
 export { router };
