@@ -57,7 +57,16 @@ class Controller {
           new: true,
         }
       );
-      res.status(200).json(updatedSpot);
+      res.status(204).json(updatedSpot);
+    } catch (err: any) {
+      res.status(500).send({ message: err });
+    }
+  }
+
+  async deleteSpot(req: Request, res: Response) {
+    try {
+      const updatedSpot = await Spot.findByIdAndRemove(req.params.id);
+      res.status(202).json(updatedSpot);
     } catch (err: any) {
       res.status(500).send({ message: err });
     }
