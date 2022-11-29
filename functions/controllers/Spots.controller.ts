@@ -64,7 +64,8 @@ class Controller {
       const updatedSpot = await Spot.findOneAndUpdate({ _id: id }, toUpdate, {
         new: true,
       });
-      res.status(204).json(updatedSpot);
+      // TODO: change back to 204?
+      res.status(200).json(updatedSpot);
     } catch (err: any) {
       res.status(500).send({ message: err });
     }

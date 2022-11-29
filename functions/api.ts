@@ -22,6 +22,12 @@ database.once("connected", () => {
 const app = express();
 const router = express.Router();
 
+// app.use(
+//   cors({
+//     origin: "https://www.section.io",
+//   })
+// );
+
 app.use(cors());
 app.use(express.json());
 
